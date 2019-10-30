@@ -14,14 +14,13 @@ class ManagerbotSpider(scrapy.Spider):
         #items = response.xpath('.//div[contains(@class, "lista-resultado-busca)]//article]contains(@class, "vaga_hlisting")')
         for item in items:
 
-            titulo_vaga = item.xpath('.//a[contains(@class, "permalink")]/text()').extract_first() #Pega titulo real da vaga
+            titulo = item.xpath('.//header[contains(@class, "titulo")]//h2[contains(@class, "permalink")]//mark/text()')
             descricao = item.xpath('.//p[contains(@class, "descricao description")]/text()').extract()
-            salario = item.xpath('/html/body/div[4]/div/form/div[2]/section/div[2]/article[1]/header/small/span[1]').extract() #pega faixa salarial
+            salario = item.xpath('/html/body/div[4]/div/form/div[2]/section/div[2]/article[1]/header/small/span[1)').extract() #pega faixa salarial
             cidade = item.xpath('.//footer[contains(@class, "rodape")]//span[contains(@class, "localidade linha-rodape-vaga location adr")]//a[contains(@class, "cidade locality")]//span/text()').extract() #pega cidade
             estado = item.xpath('.//footer[contains(@class, "rodape")]//span[contains(@class, "localidade linha-rodape-vaga location adr")]//a[contains(@class, "uf region")]//span/text()').extract() #pega cidade
 
-    
-        self.log(titulo_vaga)
+        self.log(titulo)
         self.log(descricao)
         self.log(salario)
         self.log(cidade)
