@@ -19,11 +19,15 @@ class ManagerbotSpider(scrapy.Spider):
             cidade = item.xpath('.//footer[contains(@class, "rodape")]//span[contains(@class, "localidade linha-rodape-vaga location adr")]//a[contains(@class, "cidade locality")]//span/text()').extract() #pega cidade
             estado = item.xpath('.//footer[contains(@class, "rodape")]//span[contains(@class, "localidade linha-rodape-vaga location adr")]//a[contains(@class, "uf region")]//span/text()').extract() #pega cidade
         
-        
+        #next_page = items.xpath('/footer/div[contains(@class, "pagination pagination-centered hidden-print")]/ul/li[contains(@title, "Vagas de Emprego de Desenvolvedor Javascript - Última Página")]/a').extract()
+        #if next_page is not None:
+        #    yield response.follow(next_page, self.parse)
+            
         self.log(titulo)
         self.log(descricao)
         self.log(salario)
         self.log(cidade)
         self.log(estado)
+        self.log(next_page)
 
 
