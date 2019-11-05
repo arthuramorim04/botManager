@@ -12,10 +12,10 @@ class ManagerbotSpider(scrapy.Spider):
         items = response.xpath('//*[@id="resultado-busca-vagas"]')
         for item in items:
 
-            url = item.xpath('//header[contains(@class, "titulo")]//h2//a[contains(@class, "permalink")]/@href').extract_first()
+            url = items.xpath('//header[contains(@class, "titulo")]//h2//a[contains(@class, "permalink")]/@href').extract_first()
             yield scrapy.Request(url=url, callback=self.parse_detalhes)
 
-            next_page = response.xpath('//div[contains(@class, "pagination pagination-centered hidden-print")]//ul//li[contains(@title, "Vagas de Emprego de Desenvolvedor Javascript - Página Seguinte")]//a[contains(@class, "next nofollow")]//@href').extract_first()
+            next_page = items.xpath('//div[contains(@class, "pagination pagination-centered hidden-print")]//ul//li[contains(@title, "Vagas de Emprego de Desenvolvedor Javascript - Página Seguinte")]//a[contains(@class, "next nofollow")]//@href').extract_first()
             
             if next_page:
                 yield scrapy.Request(url=next_page, callback=self.parse)
@@ -32,7 +32,7 @@ class ManagerbotSpider(scrapy.Spider):
         #local = items.xpath('//dl[contains(@class, "location adr")]//dd[contains(@class, "clear-none")]//span[contains(@class, "locality")]//text()').extract_first()
         
         yield{
-            titulo,
-            desc,
-            salario
+            'titulo ': titulo,
+            'descricao ':desc,
+            'salario ': salario
         }
