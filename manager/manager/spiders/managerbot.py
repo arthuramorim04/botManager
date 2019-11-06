@@ -5,7 +5,7 @@ import scrapy
 class ManagerbotSpider(scrapy.Spider):
     name = 'managerbot'
     allowed_domains = ['manager.com.br']
-    start_urls = ['http://manager.com.br/empregos-desenvolvedor-javascript//']
+    start_urls = ['http://manager.com.br/empregos-desenvolvedor-javascript/']
 
     def parse(self, response):
 
@@ -17,19 +17,21 @@ class ManagerbotSpider(scrapy.Spider):
 
             next_page = items.xpath('//div[contains(@class, "pagination pagination-centered hidden-print")]//a[@rel="next nofollow"]/@href').extract_first()
             if next_page:
-                yield scrapy.Request(url=next_page.extract_first(), callback=self.parse)
+                yield scrapy.Request(url=next_page, callback=self.parse)
 
             
 
     def parse_detalhes(self, response):
 
         self.log('test')
-        titulo = response.xpath('//header[@class="page-header"]/meta').extract_first()
-        cidade = response.xpath('//dl[@class="location adr"]/dd[@class="clear-none"]/span').extract_first()
-        salario = response.xpath('//div[@class="sub-item"]/dl/dd/meta').extract()
+        titulo = response.xpath('//header[@class="page-header"]/h1[@class="pull-left item offer announce fn"]/span/text()').extract_first()
+        cidade = response.xpath('//dl[@class="location adr"]/dd[@class="clear-none"]/span/text()').extract_first()
+        salario = response.xpath('//div[@class="sub-item"]/dl/dd/text()').extract_first()
+        desc = response.xpath('//div[@class="description"]/p/text()').extract_first()
         
         yield{
             'titulo' : titulo,
-            'desc' : cidade,
-            'salario' : salario
+            'Cidade' : cidade,
+            'salario' : salario,
+            'descricao' : desc
         }
