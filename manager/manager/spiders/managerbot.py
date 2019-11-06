@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import unicodedata
+import re
 
 
 class ManagerbotSpider(scrapy.Spider):
@@ -23,11 +25,10 @@ class ManagerbotSpider(scrapy.Spider):
 
     def parse_detalhes(self, response):
 
-        self.log('test')
-        titulo = response.xpath('//header[@class="page-header"]/h1[@class="pull-left item offer announce fn"]/span/text()').extract_first()
-        cidade = response.xpath('//dl[@class="location adr"]/dd[@class="clear-none"]/span/text()').extract_first()
-        salario = response.xpath('//div[@class="sub-item"]/dl/dd/text()').extract_first()
-        desc = response.xpath('//div[@class="description"]/p/text()').extract_first()
+        titulo = response.xpath('//body//div[@class="container"]//article[@class="vaga hlisting"]//header[@class="page-header"]/h1[@class="pull-left item offer announce fn"]/span/text()').extract_first()
+        cidade = response.xpath('//body//div[@class="container"]//article[@class="vaga hlisting"]//dl[@class="location adr"]/dd[@class="clear-none"]/span/text()').extract_first()
+        salario = response.xpath('//body//div[@class="container"]//article[@class="vaga hlisting"]//div[@class="sub-item"]/dl/dd/text()').extract_first()
+        desc = response.xpath('//body//div[@class="container"]//article[@class="vaga hlisting"]//div[@class="description"]/p/text()').extract_first()
         
         yield{
             'titulo' : titulo,
