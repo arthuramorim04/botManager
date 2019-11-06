@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import unicodedata
-import re
 
 
 class ManagerbotSpider(scrapy.Spider):
@@ -13,7 +11,7 @@ class ManagerbotSpider(scrapy.Spider):
 
         items = response.xpath('//div[@id="lista-resultado-busca-vagas"]/article[@class="vaga hlisting"]/header/h2')
         for item in items:
-
+            #fazer a xpath mais completa pra tentar otimizar o tempo de processamento
             url = items.xpath('./a/@href').extract_first()
             yield scrapy.Request(url=url, callback=self.parse_detalhes)
 
