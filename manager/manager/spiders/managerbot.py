@@ -9,14 +9,15 @@ class ManagerbotSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        items = response.xpath('//div[@id="lista-resultado-busca-vagas"]/article[@class="vaga hlisting"]/header/h2')
+        items = response.xpath('//div[@class="lista-resultado-busca"]/article[@class="vaga hlisting"]/header[@class="titulo"]')
         for item in items:
             #fazer a xpath mais completa pra tentar otimizar o tempo de processamento
-            url = items.xpath('./a/@href').extract_first()
+            url = items.xpath('./h2[@class="cargo item offer announce fn"]/a[@class="permalink"]/@href').extract_first()
             yield scrapy.Request(url=url, callback=self.parse_detalhes)
 
             next_page = items.xpath('//div[contains(@class, "pagination pagination-centered hidden-print")]//a[@rel="next nofollow"]/@href').extract_first()
             if next_page:
+                #self.log('Next Page: {0}'.format(next_page))
                 yield scrapy.Request(url=next_page, callback=self.parse)
 
             
